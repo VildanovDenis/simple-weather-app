@@ -1,13 +1,22 @@
 import React from "react";
 import styledComponents from "styled-components";
-import { Button } from "./city-button";
-import { Weather } from "./city-weather";
 
-const WeatherWrapper = styledComponents.section`
+import { CityButton } from "../city-button";
+import { CityWeather } from "../city-weather";
+
+const StyledWeatherWrapper = styledComponents.section`
   width: 1024px;
   margin: 0 auto;
   padding: 40px;
   box-sizing: border-box;
+`;
+const StyledButtonList = styledComponents.ul`
+  display: flex;
+  justify-content: center;
+  width: auto;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
 `;
 const PLACES = [
   { name: "Moscow", zip: "524901" },
@@ -19,32 +28,36 @@ export class WeatherBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeZip: 1488754,
+      activeZip: 1488754
     };
-  };
+  }
 
-  updateZip = (i) => {
-    const zip = i;
+  /**
+   * Принимает код города и обновляет состояние компонента.
+   */
+  updateZip = activeZip => {
     this.setState({
-      activeZip: zip,
-    })
+      activeZip: activeZip
+    });
   };
 
   render() {
     return (
-      <WeatherWrapper>
-        <aside>
+      <StyledWeatherWrapper>
+        <StyledButtonList>
           {PLACES.map(place => (
-              <Button
+            <li key={place.zip}>
+              <CityButton
                 key={place.zip}
                 placeZip={place.zip}
                 placeName={place.name}
                 updateZip={this.updateZip}
               />
+            </li>
           ))}
-        </aside>
-        <Weather activeZip={this.state.activeZip} />
-      </WeatherWrapper>
+        </StyledButtonList>
+        <CityWeather activeZip={this.state.activeZip} />
+      </StyledWeatherWrapper>
     );
   }
 }
